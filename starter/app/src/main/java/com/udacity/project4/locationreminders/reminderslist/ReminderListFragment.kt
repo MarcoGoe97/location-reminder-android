@@ -2,11 +2,13 @@ package com.udacity.project4.locationreminders.reminderslist
 
 import android.os.Bundle
 import android.view.*
-import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
+import com.firebase.ui.auth.AuthUI
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentRemindersBinding
+import com.udacity.project4.utils.Constants
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import com.udacity.project4.utils.setTitle
 import com.udacity.project4.utils.setup
@@ -16,15 +18,9 @@ class ReminderListFragment : BaseFragment() {
     //use Koin to retrieve the ViewModel instance
     override val _viewModel: RemindersListViewModel by viewModel()
     private lateinit var binding: FragmentRemindersBinding
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding =
-            DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_reminders, container, false
-            )
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentRemindersBinding.inflate(inflater)
         binding.viewModel = _viewModel
 
         setHasOptionsMenu(true)
@@ -42,6 +38,13 @@ class ReminderListFragment : BaseFragment() {
         setupRecyclerView()
         binding.addReminderFAB.setOnClickListener {
             navigateToAddReminder()
+        }
+
+        // Observe the authentication state so we can know if the user has logged out successfully.
+        _viewModel.authenticationState.observe(viewLifecycleOwner) { authenticationState ->
+            if(authenticationState != Constants.AuthenticationState.AUTHENTICATED) {
+                findNavController().navigate(ReminderListFragmentDirections.toAuthentication())
+            }
         }
     }
 
@@ -64,14 +67,15 @@ class ReminderListFragment : BaseFragment() {
         val adapter = RemindersListAdapter {
         }
 
-//        setup the recycler view using the extension function
+        //setup the recycler view using the extension function
         binding.reminderssRecyclerView.setup(adapter)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.logout -> {
-//                TODO: add the logout implementation
+                //Logout
+                AuthUI.getInstance().signOut(requireContext())
             }
         }
         return super.onOptionsItemSelected(item)
