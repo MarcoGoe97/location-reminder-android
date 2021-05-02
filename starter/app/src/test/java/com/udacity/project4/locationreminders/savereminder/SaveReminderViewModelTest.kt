@@ -148,13 +148,13 @@ class SaveReminderViewModelTest {
     @Test
     fun check_saveReminder() = runBlockingTest {
         //GIVEN a ReminderDataItem
-        val reminder = ReminderDataItem("Title1", "Description1", "Location1", 0.0, 0.0, "Test1")
+        val reminder = ReminderDataItem("Title1", "Description1", "Location1", 0.0, 0.0)
 
         //WHEN saveReminder is called
         saveReminderViewModel.saveReminder(reminder)
 
         //THEN the reminder is saved in the data source
-        val savedReminder = fakeDataSource.getReminder("Test1")
+        val savedReminder = fakeDataSource.getReminder(reminder.id)
         assertThat((savedReminder as? Result.Success<ReminderDTO>)?.data, not(nullValue()))
 
         //THEN navigationCommand is Back
