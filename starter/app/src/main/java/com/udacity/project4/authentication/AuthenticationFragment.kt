@@ -17,7 +17,7 @@ class AuthenticationFragment : Fragment() {
 
     private val viewModel by viewModels<AuthenticationViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAuthenticationBinding.inflate(inflater)
         binding.lifecycleOwner = this
 

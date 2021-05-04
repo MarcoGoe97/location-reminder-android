@@ -74,14 +74,14 @@ class SaveReminderViewModelTest {
         saveReminderViewModel.saveReminder(ReminderDataItem("Titel1", "Description1", "Location1", 0.0, 0.0))
 
         //THEN assert that the loading indicator is shown
-        MatcherAssert.assertThat(
+        assertThat(
             saveReminderViewModel.showLoading.getOrAwaitValue(), Is.`is`(true))
 
         // Execute pending coroutines actions.
         mainCoroutineRule.resumeDispatcher()
 
         //THEN assert that the loading indicator is hidden
-        MatcherAssert.assertThat(
+        assertThat(
             saveReminderViewModel.showLoading.getOrAwaitValue(), Is.`is`(false))
     }
 

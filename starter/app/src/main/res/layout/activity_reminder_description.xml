@@ -14,14 +14,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".locationreminders.ReminderDescriptionActivity">
-        <!--TODO: add the design of the reminder details-->
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_extra_large"
             android:gravity="center"
-            android:text="Reminder Details:"
+            android:text="@string/content_text"
             android:textSize="@dimen/text_size_large"/>
 
         <TextView
@@ -50,6 +49,5 @@
             android:text="@{reminderDataItem.location}"
             android:textSize="@dimen/text_size_normal"
             tools:text="Test Location"/>
-
     </LinearLayout>
 </layout>

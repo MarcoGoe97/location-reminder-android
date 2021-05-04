@@ -27,7 +27,7 @@
             android:layout_marginEnd="@dimen/margin_extra_large"
             android:layout_marginBottom="@dimen/margin_extra_large"
             android:visibility="gone"
-            android:text="Login"
+            android:text="@string/login"
             style="@style/Widget.AppCompat.Button.Colored"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
