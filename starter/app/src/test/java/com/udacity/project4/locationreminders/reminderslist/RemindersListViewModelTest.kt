@@ -43,14 +43,11 @@ class RemindersListViewModelTest {
     private lateinit var fakeDataSource: FakeDataSource
 
     @Before
-    fun setupFireBase() {
-        FirebaseApp.initializeApp(ApplicationProvider.getApplicationContext())
-    }
-
-    @Before
     fun setupRemindersListViewModel() {
         // Initialise the repository with no tasks
         fakeDataSource = FakeDataSource()
+
+        FirebaseApp.initializeApp(ApplicationProvider.getApplicationContext())
 
         remindersListViewModel = RemindersListViewModel(ApplicationProvider.getApplicationContext(), fakeDataSource)
     }
