@@ -5,6 +5,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,7 @@ import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
+import java.util.*
 
 class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
 
@@ -35,6 +37,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
 
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var geocoder: Geocoder
 
     private val REQUEST_LOCATION_PERMISSION = 1
 
@@ -54,6 +57,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
         mapFragment.getMapAsync(this)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        geocoder = Geocoder(requireContext(), Locale.getDefault())
 
         binding.btnSave.setOnClickListener {
             onLocationSelected()
@@ -106,6 +110,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
 
         setMapStyle(map)
         setPoiClick(map)
+        setMapLongClick(map)
         enableMyLocation()
     }
 
@@ -126,6 +131,35 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
             poiMarker.showInfoWindow()
         }
     }
+
+    private fun setMapLongClick(map: GoogleMap) {
+        map.setOnMapLongClickListener { latLng ->
+            map.clear()
+
+            //Get address from latLong
+            val address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+            var completeAddress = address?.get(0)?.getAddressLine(0)
+            if(completeAddress.isNullOrEmpty()){
+                completeAddress = latLng.latitude.toString() + ", " + latLng.longitude.toString()
+            }
+
+            //save values
+            _viewModel.latitude.value = latLng.latitude
+            _viewModel.longitude.value = latLng.longitude
+            _viewModel.selectedPOI.value = PointOfInterest(latLng, UUID.randomUUID().toString(), completeAddress)
+            _viewModel.reminderSelectedLocationStr.value = completeAddress
+
+            // A Snippet is Additional text that's displayed below the title.
+            map.addMarker(
+                    MarkerOptions()
+                            .position(latLng)
+                            .title(getString(R.string.dropped_pin))
+                            .snippet(completeAddress)
+
+            ).showInfoWindow()
+        }
+    }
+
 
     private fun setMapStyle(map: GoogleMap) {
         try {
