@@ -1,6 +1,6 @@
 # Location Reminder
 
-A Todo list app with location reminders that remind the user to do something when he reaches a specific location. The app will require the user to create an account and login to set and access reminders.
+A Todo list app with location reminders that remind the user to do something when he reaches a specific location. The app will require the user to create an account and login to set and access reminders. It is is part of the udacity Android Kotlin Developer Nanodegree Program.
 
 ## Getting Started
 
@@ -35,17 +35,6 @@ Step by step explanation of how to get a dev environment running.
 ## Testing
 
 Right click on the `test` or `androidTest` packages and select Run Tests
-
-### Break Down Tests
-
-Explain what each test does and why
-
-```
-1.androidTest
-        //TODO: Students explain their testing here.
-2. test
-        //TODO: Students explain their testing here.
-```
 
 ## Project Instructions
     1. Create a Login screen to ask users to login using an email address or a Google account.  Upon successful login, navigate the user to the Reminders screen.   If there is no account, the app should navigate to a Register screen.
